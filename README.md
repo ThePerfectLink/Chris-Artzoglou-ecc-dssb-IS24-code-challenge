@@ -27,7 +27,7 @@ These features will be worked on in a separate branch to make retrieval of the o
 
 -Proper view page for each ECC project entry
 
--No endpoint monitoring
+-Endpoint monitoring
 
 ## Rough Edges:
 
