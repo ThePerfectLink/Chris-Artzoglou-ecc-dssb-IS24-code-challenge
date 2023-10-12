@@ -17,21 +17,13 @@ view on http://localhost:3000/api/search or just http://localhost:3000/
 
 # Incomplete features and problems
 
-These features will be worked on in a separate branch to make retrieval of the original submission easy.
+These features will be worked on in this branch.
 
 ## Incomplete Features:
-
--Product Owner Search
-
--Scrum Master Search
-
--Proper view page for each ECC project entry
 
 -Endpoint monitoring
 
 ## Rough Edges:
-
--No Code cleanup
 
 -No front facing text cleanup
 

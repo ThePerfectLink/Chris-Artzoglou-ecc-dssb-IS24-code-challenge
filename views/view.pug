@@ -2,13 +2,17 @@ doctype html
 html(lang='en')
     head
         meta(charset="utf-8")
-        title ECC Project - Add
-        link(rel='stylesheet', href='../add/add.css')
-        script(src="../htmx.min.js")
+        title ECC Project - View
+        link(rel='stylesheet', href='../../add/add.css')
+        script(src="../../htmx.min.js")
     body
         div(id="content")
                 table()
                     each val, index in items 
                         tr 
-                            th #{index}
-                            th #{val}
+                            td #{index}
+                            td #{val}
+                    tr
+                        td
+                            form(action="/api/search")
+                                input(type="submit" class="cancel" value="Back") 

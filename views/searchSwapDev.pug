@@ -1,0 +1,9 @@
+form(class="search" id="search" hx-swap='outerHTML')
+    input(hx-get="/api/search" type="text" value=`${search}` placeholder="Search ECC dev" name="q" class="form-control mb-3" hx-sync="closest form:abort")
+    button(type="submit" class="btn btn-primary") Search 
+    input(name=`search-type` hx-target="#search" type="radio" value=`Product` hx-get="/api/search")
+    label(for="Product") Product
+    input(name=`search-type` hx-target="#search" type="radio" value="Scrum" hx-get="/api/search")
+    label(for="Scrum") Scrum Master
+    input(name=`search-type` hx-target="#search" type="radio" checked="true" value="Dev")
+    label(for="Dev") Developer

@@ -1,29 +1,38 @@
 const express = require('express');
-const app = express();
 const router = express.Router();
-const path = require('path');
 const ecc = require('../model/Ecc');
 const fs = require("fs")
 
 var data = ecc.getEcc();
-//console.log(data);
-
-var option = {
-    root: __dirname
-}
+var searchValue = "";
 
 router.get('/api/search', (req, res) => {
     if(req.query['q']) {
-        let regex = new RegExp("^.*"+ req.query['q'].toUpperCase() +".*$", 'g')
-        let subset = data.filter(item => item['productName'].match(regex));
-        if( subset.length > 0 ) {
-            res.status(200).render("pages", {projects : subset, headers: Object.keys(subset[0])});
-        } else {
-            res.status(200).render("pages", {projects : data, headers: Object.keys(data[0])});
-        }
+            if(!req.query['search-type']){
+                searchValue = req.query['q'];
+            }
+            let regex;
+            let subset;
+            if(req.query['search-type'] == 'Product') {
+                regex = new RegExp("^.*"+ req.query['q'].toUpperCase() +".*$", 'g');
+                subset = data.filter(item => item['productName'].match(regex));
+            } else if(req.query['search-type'] == 'Scrum') {
+                regex = new RegExp("^.*"+ req.query['q'] +".*$", 'g');
+                subset = data.filter(item => item['scrumMasterName'].match(regex));
+            } else if(req.query['search-type'] == 'Dev') {
+                regex = new RegExp("^.*"+ req.query['q'] +".*$", 'g');
+                subset = data.filter(item => item['developers'].toString().match(regex));
+            }
+            if( subset.length > 0 ) {
+                res.status(200).render("pages", {projects : subset, headers: Object.keys(subset[0])});
+            } else {
+                res.status(200).render("pages", {projects : [], headers: Object.keys(data[0])});
+            }
+    } else if (req.query['search-type']) {
+        res.status(200).render(`searchSwap${req.query['search-type']}`, { search: searchValue });
     } else {
         res.status(200).render("pages", {projects : data, headers: Object.keys(data[0])});
-    }
+    }   
 });
 
 router.get('/api/add', (req, res) => {
@@ -40,13 +49,10 @@ router.get('/api/add', (req, res) => {
 });
 
 router.get('/api/product/:urlToShorten(*)', (req, res) => {
-    console.log(req.params)
-    console.log(req.body)
     if(req.params[0]) {
         let regex = new RegExp("^" + req.params[0] + "$", 'g')
         let subset = data.filter(item => item['productId'].match(regex));
         if( subset.length > 0 ) {
-            console.log(subset)
             res.status(200).render("view", {items : subset[0]});
         } else {
             res.redirect('/404');
@@ -63,12 +69,10 @@ router.post('/api/search', (req, res) => {
         id = Math.random().toString(36).slice(2);
         regex = new RegExp("^" + id + "$", 'g')
     } while (data.filter(item => item['productId'].match(regex)) > 0)
-    console.log(req.body);
     if(req.body["productName"]) {
-        console.log(req.body)
         let template = {
             productId: id,
-            productName: req.body["productName"],
+            productName: req.body["productName"].toUpperCase(),
             productOwnerName: req.body["productOwnerName"],
             developers: req.body["developers"].split(','),
             scrumMasterName: req.body["scrumMasterName"],
@@ -91,7 +95,6 @@ router.get('/api/edit/:urlToShorten(*)', (req, res) => {
         let regex = new RegExp("^" + req.params[0] + "$", 'g')
         let subset = data.filter(item => item['productId'].match(regex));
         if( subset.length > 0 ) {
-            console.log(subset)
             res.status(200).render("edit", {items : subset[0]});
         } else {
             res.redirect('/404');
@@ -105,12 +108,12 @@ router.patch('/api/save/:urlToShorten(*)', (req, res) => {
     if(req.params[0]) {
         let newData = data.map(item => 
             item.productId === req.params[0] ? {
-                ...item, productName: req.body["productName"],
+                ...item, productName: req.body["productName"].toUpperCase(),
                 productOwnerName: req.body["productOwnerName"],
                 developers: req.body["developers"].split(','),
                 scrumMasterName: req.body["scrumMasterName"],
                 startDate: req.body["startDate"],
-                methodology: req.body["methodology"],
+                methodology: req.body[`radio-${req.params[0]}`],
                 location: req.body["location"],
             } : item
         )
@@ -121,12 +124,12 @@ router.patch('/api/save/:urlToShorten(*)', (req, res) => {
         
         let subset = {
             productId: req.params[0],
-            productName: req.body["productName"],
+            productName: req.body["productName"].toUpperCase(),
             productOwnerName: req.body["productOwnerName"],
             developers: req.body["developers"].split(','),
             scrumMasterName: req.body["scrumMasterName"],
             startDate: req.body["startDate"],
-            methodology: req.body["methodology"],
+            methodology: req.body[`radio-${req.params[0]}`],
             location: req.body["location"],
         };
         subset.productId = req.params[0];
@@ -151,12 +154,10 @@ router.delete('/api/delete/:urlToShorten(*)', (req, res) => {
 });
 
 router.get('/', (req, res) => {
-    console.log("FUCK")
     res.redirect('/api/search');
 });
 
 router.get('(\/[a-zA-Z0-9]*)+', (req, res) => {
-    console.log(404)
     res.status(404).send("404");
 });
 

@@ -11,7 +11,7 @@ td input {
     width: 95%;
 }
 td button {
-    max-width: 33%;
+    max-width: 50%;
 }
 .count {
     float: right;

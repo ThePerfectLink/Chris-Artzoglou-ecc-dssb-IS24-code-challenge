@@ -1,10 +1,16 @@
 div(id="content")
-    form(class="mb-3 search")
-        input(hx-get="/api/search" type="text" placeholder="Search ECC project" name="q" class="form-control mb-3" hx-sync="closest form:abort")
-        button(type="submit" class="btn btn-primary") Search 
+    form(class="search" id="search" hx-swap='outerHTML')
+        input(hx-get="/api/search" type="text" placeholder="Search ECC project" name="q" hx-sync="closest form:abort")
+        button(type="submit") Search 
+        input(name=`search-type` hx-target="#search" type="radio" checked="true" value='Product')
+        label(for="Product") Product
+        input(name=`search-type` hx-target="#search" type="radio" value="Scrum" hx-get="/api/search")
+        label(for="Scrum") Scrum Master
+        input(name=`search-type` hx-target="#search" type="radio" value="Dev" hx-get="/api/search")
+        label(for="Dev") Developer
     span(class="count") Results: #{projects.length}
     form(action="/api/add")
-        input(class="btn btn-primary add" type="submit" value="New Entry")
+        input(class="add" type="submit" value="New Entry")
     table(id="search-results" hx-swap="beforeend")
         tr(id="header" hx-swap="beforeend")
             each header in headers
@@ -12,7 +18,8 @@ div(id="content")
             th commands
         each project in projects 
             tr(id=`id-${project.productId}` hx-swap="outerHTML")
-                td #{project.productId}
+                td
+                    a(href=`/api/product/${project.productId}`) #{project.productId}
                 td #{project.productName}
                 td #{project.productOwnerName}
                 td #{project.developers}
@@ -21,7 +28,5 @@ div(id="content")
                 td #{project.methodology}
                 td #{project.location}
                 td
-                    button(class="btn btn-primary edit" hx-target=`#id-${project.productId}` hx-get=`/api/edit/${project.productId}`) Edit 
-                    button(idclass="btn btn-primary delete" hx-target=`#content` hx-delete=`/api/delete/${project.productId}`) Delete
-                    form(action="/api/product/")
-                        button(idclass="btn btn-primary view" hx-include=`${project.productId}`) View
+                    button(class="edit" hx-target=`#id-${project.productId}` hx-get=`/api/edit/${project.productId}`) Edit 
+                    button(idclass="delete" hx-target=`#content` hx-delete=`/api/delete/${project.productId}`) Delete

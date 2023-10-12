@@ -1,6 +1,10 @@
 tr(id=`id-${items['productId']}` hx-swap="outerHTML")
-    each val in items 
-        td #{val}
+    each val, index in items 
+        if index == 'productId'
+            td
+                a(href=`/api/product/${index}`) #{val}
+        else
+            td #{val}
     td
-        button(class="btn btn-primary edit" hx-target=`#id-${items['productId']}` hx-get=`/api/edit/${items['productId']}`) Edit 
-        button(idclass="btn btn-primary delete" hx-delete=`/api/delete/${items['productId']}`) Delete
+        button(class="edit" hx-target=`#id-${items['productId']}` hx-get=`/api/edit/${items['productId']}`) Edit 
+        button(idclass="delete" hx-delete=`/api/delete/${items['productId']}`) Delete

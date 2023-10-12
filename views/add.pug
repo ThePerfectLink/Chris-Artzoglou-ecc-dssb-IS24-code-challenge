@@ -28,10 +28,10 @@ html(lang='en')
                                         id=`${index}` hx-sync="closest form:abort" hx-post="/api/search")
                         tr
                             td
-                                input(type="submit" class="btn btn-primary save" value="Save" 
+                                input(type="submit" class="save" value="Save" 
                                 hx-include=".editing, [name='radio']")
                     tr
                         td
                             form(action="/api/search")
-                                input(type="submit" class="btn btn-primary cancel" value="Cancel") 
+                                input(type="submit" class="cancel" value="Cancel") 
     
