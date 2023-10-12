@@ -1,0 +1,37 @@
+doctype html 
+html(lang='en')
+    head
+        meta(charset="utf-8")
+        title ECC Project - Add
+        link(rel='stylesheet', href='../add/add.css')
+        script(src="../htmx.min.js")
+    body
+        div(id="content")
+                table()
+                    form(action="/api/search" method="POST")
+                        each val, index in items 
+                            tr 
+                                if index == 'productId' || index == "startDate"
+                                    th #{index}
+                                    th #{val}
+                                else if index == "methodology"
+                                    td #{index}
+                                    th 
+                                        input(name= "radio" type="radio" value=`Agile`)
+                                        label(for="html") Agile
+                                        input(name= "radio" type="radio" value=`Waterfall`)
+                                        label(for="html") Waterfall
+                                else
+                                    td #{index}
+                                    td
+                                        input(class= "editing" type=text placeholder=`${val}` name=`${index}` 
+                                        id=`${index}` hx-sync="closest form:abort" hx-post="/api/search")
+                        tr
+                            td
+                                input(type="submit" class="btn btn-primary save" value="Save" 
+                                hx-include=".editing, [name='radio']")
+                    tr
+                        td
+                            form(action="/api/search")
+                                input(type="submit" class="btn btn-primary cancel" value="Cancel") 
+    

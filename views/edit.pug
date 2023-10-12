@@ -1,0 +1,12 @@
+tr(id=`id-${items['productId']}` hx-swap="outerHTML")
+    form(class="mb-3")
+        each val, index in items 
+            if index == 'productId'
+                td #{val}
+            else
+                td
+                    input(class= "editing" type=text value=`${val}` name=`${index}` 
+                    hx-sync="closest form:abort" hx-patch="/api/save")
+        td
+            button(type="submit" class="btn btn-primary save" 
+            hx-patch=`/api/save/${items['productId']}` hx-include=".editing" hx-target=`#id-${items['productId']}`) Save 

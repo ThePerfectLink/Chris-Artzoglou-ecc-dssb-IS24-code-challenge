@@ -1,0 +1,27 @@
+div(id="content")
+    form(class="mb-3 search")
+        input(hx-get="/api/search" type="text" placeholder="Search ECC project" name="q" class="form-control mb-3" hx-sync="closest form:abort")
+        button(type="submit" class="btn btn-primary") Search 
+    span(class="count") Results: #{projects.length}
+    form(action="/api/add")
+        input(class="btn btn-primary add" type="submit" value="New Entry")
+    table(id="search-results" hx-swap="beforeend")
+        tr(id="header" hx-swap="beforeend")
+            each header in headers
+                th #{header}
+            th commands
+        each project in projects 
+            tr(id=`id-${project.productId}` hx-swap="outerHTML")
+                td #{project.productId}
+                td #{project.productName}
+                td #{project.productOwnerName}
+                td #{project.developers}
+                td #{project.scrumMasterName}
+                td #{project.startDate}
+                td #{project.methodology}
+                td #{project.location}
+                td
+                    button(class="btn btn-primary edit" hx-target=`#id-${project.productId}` hx-get=`/api/edit/${project.productId}`) Edit 
+                    button(idclass="btn btn-primary delete" hx-target=`#content` hx-delete=`/api/delete/${project.productId}`) Delete
+                    form(action="/api/product/")
+                        button(idclass="btn btn-primary view" hx-include=`${project.productId}`) View

@@ -1,0 +1,6 @@
+tr(id=`id-${items['productId']}` hx-swap="outerHTML")
+    each val in items 
+        td #{val}
+    td
+        button(class="btn btn-primary edit" hx-target=`#id-${items['productId']}` hx-get=`/api/edit/${items['productId']}`) Edit 
+        button(idclass="btn btn-primary delete" hx-delete=`/api/delete/${items['productId']}`) Delete

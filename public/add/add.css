@@ -1,0 +1,21 @@
+#search-results {
+    width:100%;
+}
+tr:nth-child(odd) {
+    background-color: lightgray;
+}
+.delete {
+    float: right;
+}
+td input {
+    width: 95%;
+}
+.count {
+    float: right;
+}
+.search{
+    float: left;
+}
+.cancel {
+    display: inline;
+}
