@@ -12,7 +12,9 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 ## Installation Instructions
 
 npm install
+
 npm start
+
 view on http://localhost:3000/api/search or just http://localhost:3000/
 
 # Incomplete features and problems
