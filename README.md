@@ -22,13 +22,18 @@ These features will be worked on in a separate branch to make retrieval of the o
 ## Incomplete Features:
 
 -Product Owner Search
+
 -Scrum Master Search
+
 -Proper view page for each ECC project entry
+
 -No endpoint monitoring
 
 ## Rough Edges:
 
 -No Code cleanup
+
 -No front facing text cleanup
+
 -Hardly any styling
 
